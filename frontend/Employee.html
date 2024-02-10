@@ -1,0 +1,41 @@
+<html>
+  <body onload="getEmployees()">
+     <table border="solid black 1" id="empTable">
+      <thead>
+        <tr>
+          <th>Full Name</th>
+          <th>Department</th>
+          <th>Shifts</th>
+        </tr>
+      </thead>
+    </table>
+
+    <script>
+      const url = 'http://127.0.0.1:3000/employees';
+        async function getEmployees() {
+        //const accessToken = sessionStorage['accessToken'];
+        const resp = await fetch(url, {
+          method: 'GET',
+          //headers: { 'x-access-token': accessToken },
+        });
+
+        const data = await resp.json();
+        const empTable = document.getElementById("empTable");
+        data.forEach(emp => {
+                const row = empTable.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                const fullNameLink = document.createElement('a');
+                fullNameLink.textContent = emp.fullName;
+                
+                
+                fullNameLink.href = `editEmployee.html?id=${emp.id}`; // Pass employee's ID as a parameter in the URL
+                cell1.appendChild(fullNameLink);
+                cell2.textContent=emp.department;
+                cell3.textContent = emp.shifts;
+            });
+        }
+    </script>
+  </body>
+</html>
