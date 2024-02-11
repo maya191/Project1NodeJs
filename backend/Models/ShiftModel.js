@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const ShiftSchema = new mongoose.Schema(
   {
-    Date :String,
+    Date: String,
     StartingHour: Number,
-    EndingHour:Number
+    EndingHour: Number,
   },
   { versionKey: false }
 );
 
-const Shift = mongoose.model('Shift', ShiftSchema, 'Shifts');
+const Shift = mongoose.model("Shift", ShiftSchema, "Shifts");
 
 module.exports = Shift;

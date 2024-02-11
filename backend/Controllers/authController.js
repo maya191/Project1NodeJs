@@ -10,6 +10,7 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   const { username, email } = req.body;
   const token = await authService.findUserInSystem(username, email);
+
   if (token) {
     res.send({ accessToken: token });
   } else {

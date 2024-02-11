@@ -1,60 +1,70 @@
-const Department = require('../Models/DepartmentModel');
-const departmentRepository= require('../Repositories/departmentRepository');
-const employeeRepository= require('../Repositories/employeeRepository');
+const Department = require("../Models/DepartmentModel");
+const departmentRepository = require("../Repositories/departmentRepository");
+const employeeRepository = require("../Repositories/employeeRepository");
 
 // A Table with all Departments data. Each row presents :
- //Department name, 
- //Department manager name, 
- //and a list of Employees names work in that department.
+//Department name,
+//Department manager name,
+//and a list of Employees names work in that department.
 
-const getAllDepartments=async ()=>{
-    const employees= await employeeRepository.getAllEmployees();
-    const departments= await departmentRepository.getAllDepartments();
+const getAllDes = async () => {
+  const Employees = await employeeRepository.getAllEmployees();
+  const Departments = await departmentRepository.getAllDepartments();
 
-    //console.log(employees)
-    //console.log(departments)
-    const empRes=employees.map( emp=>
-        {return emp._id.toString()===departments.manager
-                }        
-    )
-    console.log(empRes)
-    
-    const empsArr=[]
-    departments.map(async element => {
-        const emp= await employeeRepository.getEmployeesByDep(element)
-        console.log(emp)
-        empsArr.push(emp)
-        
+  try {
+    const employeeData = Departments.map((department) => {
+      // Find manager of the department
+      const departmentManager = Employees.find((employee) => {
+        return employee._id.toString() === department.Manager;
+      });
+
+      // Get employees working in this department
+      const departmentEmployees = Employees.filter(
+        (emp) => emp.DepartmentID === department._id.toString()
+      );
+
+      // Extract employee names
+      const employeeNames = departmentEmployees.map(
+        (emp) => `${emp.FirstName} ${emp.LastName}`
+      );
+      // Return a combined object
+      return {
+        departmentName: department.Name,
+        departmentManager: departmentManager
+          ? `${departmentManager.FirstName} ${departmentManager.LastName}`
+          : "Unknown Manager",
+        employeeNames: employeeNames,
+      };
     });
-    
-    return {
-        DepartmentName : departments.name,
-        DepartmentManager : emp? `${employees.FirstName} ${employees.LastName}` :"Unknown",
-        employeesInDepartment : JSON.stringify(empsArr)
-    }
 
-}
+    return employeeData;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
 
-const EditDepartment =async(depId, newDep)=>{
-    const departments=await departmentRepository.getAllDepartments();
-    return departments.updateDepartment(depId, newDep)
-    
-}
-const geDepartmentbyId = async(depID)=>{
-    const departments=await departmentRepository.getAllDepartments();
-    return await departments.geDepartmentbyId(depID)
-}
-const addDepartment = async (depObj)=>{
-    const departments= departmentRepository.getAllDepartments();
-    return departments.addDepartment(depObj)
-}
+  /* return {
+    DepartmentName: departments.name,
+    DepartmentManager: emp
+      ? `${employees.FirstName} ${employees.LastName}`
+      : "Unknown",
+    employeesInDepartment: JSON.stringify(empsArr),
+  }; */
+};
 
+const EditDepartment = async (depId, newDep) => {
+  return await departmentRepository.updateDepartment(depId, newDep);
+};
+const geDepartmentbyId = async (depID) => {
+  return await departmentRepository.geDepartmentbyId(depID);
+};
+const addDepartment = async (depObj) => {
+  return await departmentRepository.addDepartment(depObj);
+};
 
-module.exports={
-    getAllDepartments,
-    EditDepartment,
-    geDepartmentbyId,
-    addDepartment
-
-
-}
+module.exports = {
+  getAllDes,
+  EditDepartment,
+  geDepartmentbyId,
+  addDepartment,
+};

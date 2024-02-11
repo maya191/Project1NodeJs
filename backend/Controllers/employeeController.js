@@ -15,9 +15,7 @@ Router.put("/UpdateEmployee/:id", async (req, res) => {
     } else {
       const id = req.params.id;
       const emp = req.body;
-      console.log(emp);
       const status = await employeesService.updateEmployee(id, emp);
-      console.log(status);
       return res.json({ status });
     }
   });

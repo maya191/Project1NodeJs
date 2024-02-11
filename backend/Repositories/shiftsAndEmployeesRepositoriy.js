@@ -1,9 +1,9 @@
-const ShiftsAndEmployees =require("../Models/ShiftsForEmployeesModel");
+const ShiftsAndEmployees = require("../Models/ShiftsForEmployeesModel");
 
-const getAllShiftsAndEmployees=() =>{
-    return ShiftsAndEmployees.find();
-}
+const getAllShiftsAndEmployees = (id) => {
+  return ShiftsAndEmployees.find(id);
+};
 
-module.exports=
-{getAllShiftsAndEmployees
+module.exports = {
+  getAllShiftsAndEmployees,
 };
