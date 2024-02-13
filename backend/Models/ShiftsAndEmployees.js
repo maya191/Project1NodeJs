@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const shiftsForEmployeesSchema = new mongoose.Schema(
+const ShiftsAndEmployeesSchema = new mongoose.Schema(
   {
     EmployeeId: String,
     ShiftId: [String],
@@ -9,7 +9,7 @@ const shiftsForEmployeesSchema = new mongoose.Schema(
 
 const shiftsForEmployees = mongoose.model(
   "ShiftsAndEmployees",
-  shiftsForEmployeesSchema,
+  ShiftsAndEmployeesSchema,
   "ShiftsAndEmployees"
 );
 

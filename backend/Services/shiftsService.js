@@ -1,5 +1,6 @@
 const shiftRepository = require("../Repositories/shiftRepository");
 const ShiftsAndEmployees = require("../Repositories/shiftsAndEmployeesRepositoriy");
+const EmployeesRepositoriy = require("../Repositories/employeeRepository");
 
 const addShift = async (obj) => {
   await shiftRepository.addShift(obj);
@@ -9,24 +10,37 @@ const updateShift = async (id, obj) => {
   await shiftRepository.updateShift(id, obj);
   return "Updated!";
 };
+
 const addShiftToEmployee = async (shiftId, empId) => {
-  const existingAllocation = await ShiftsAndEmployees.getAllShiftsAndEmployees({
-    empId,
+  const empCheck = await EmployeesRepositoriy.getEmployeebyId(empId);
+  const shiftCheck = await shiftRepository.getShiftbyId(shiftId);
+  if (!empCheck) {
+    return "employee not found!";
+  }
+  if (!shiftCheck) {
+    return "shift not found!";
+  }
+
+  const existingAllocation =
+    await ShiftsAndEmployees.getAllShiftsAndEmployees();
+  const empShifts = existingAllocation.find((obj) => {
+    return obj.EmployeeId === empId;
   });
-  console.log(existingAllocation);
-  if (existingAllocation) {
+
+  if (empShifts) {
     // If the employee is already allocated to this shift, update the ShiftId array
-    existingAllocation.ShiftId.push(shiftId);
-    await existingAllocation.save();
+    empShifts.ShiftId.push(shiftId);
+    await empShifts.save();
+    return "New shift added to the employee";
   } else {
     // If the employee is not yet allocated to this shift, create a new entry
-    const newAllocation = new ShiftsAndEmployees({
+    const obj = {
       EmployeeId: empId,
       ShiftId: [shiftId],
-    });
-    await newAllocation.save();
+    };
+    await ShiftsAndEmployees.addShiftToEmployee(obj);
+    return "New employee and shifts added to the DB";
   }
-  return "Added!";
 };
 
 module.exports = {
