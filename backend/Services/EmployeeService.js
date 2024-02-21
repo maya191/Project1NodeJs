@@ -2,7 +2,6 @@ const EmployeeRepo = require("../Repositories/employeeRepository");
 const ShiftsRepo = require("../Repositories/shiftRepository");
 const ShiftsAndEmployeesRepo = require("../Repositories/shiftsAndEmployeesRepositoriy");
 const DepartmentRepo = require("../Repositories/departmentRepository");
-const userRepo = require("../Repositories/userRepository");
 
 const getEmployeeData = async () => {
   try {
@@ -41,7 +40,12 @@ const getEmployeeData = async () => {
         id: employee._id,
         fullName: `${employee.FirstName} ${employee.LastName}`,
         department: department ? department.Name : "Unknown Department",
-        shifts: JSON.stringify(shiftsArr),
+        //shifts: JSON.stringify(shiftsArr)
+        shifts: shiftsArr.map((shift) => ({
+          Date: shift.Date,
+          startHour: shift.startHour,
+          EndHour: shift.EndHour,
+        })),
       };
     });
     return employeeData;
@@ -51,21 +55,37 @@ const getEmployeeData = async () => {
 };
 
 const getEmpsByDep = async (dep) => {
-  const employeesData = await getEmployeeData();
-  const empsByDep = employeesData.filter((res) => res.department === dep);
-  return empsByDep;
+  try {
+    const employeesData = await getEmployeeData();
+    const empsByDep = employeesData.filter((res) => res.department === dep);
+    return empsByDep;
+  } catch (error) {
+    console.error("Error:", error);
+  }
 };
 const updateEmployee = async (id, empObj) => {
-  const status = await EmployeeRepo.updateEmployee(id, empObj);
-  return status;
+  try {
+    const status = await EmployeeRepo.updateEmployee(id, empObj);
+    return status;
+  } catch (error) {
+    console.error("Error:", error);
+  }
 };
 
 const addEmployee = async (emp) => {
-  return await EmployeeRepo.addEmployee(emp);
+  try {
+    return await EmployeeRepo.addEmployee(emp);
+  } catch (error) {
+    console.error("Error:", error);
+  }
 };
 
 const deleteEmployee = async (id) => {
-  return await EmployeeRepo.deleteEmployee(id);
+  try {
+    return await EmployeeRepo.deleteEmployee(id);
+  } catch (error) {
+    console.error("Error:", error);
+  }
 };
 module.exports = {
   getEmployeeData,

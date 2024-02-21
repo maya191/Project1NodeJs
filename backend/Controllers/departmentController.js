@@ -1,14 +1,11 @@
 const express = require("express");
 const departmentService = require("../Services/DepartmentService");
-const jwt = require("jsonwebtoken");
-const SECRET_KEY = "secret-key";
 
 const router = express.Router();
 
 router.post("/addDepartment", async (req, res) => {
   const dep = req.body;
   const status = await departmentService.addDepartment(dep);
-  //console.log(status);
   return res.json({ status });
 });
 router.get("/:id", async (req, res) => {
@@ -18,7 +15,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const allDeps = await departmentService.getAllDepartments();
+  const allDeps = await departmentService.getAllDes();
   res.send(allDeps);
 });
 

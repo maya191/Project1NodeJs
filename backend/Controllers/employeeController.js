@@ -34,5 +34,3 @@ Router.get("/", async (req, res) => {
 });
 
 module.exports = Router;
-
-const router = express.Router();

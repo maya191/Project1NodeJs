@@ -6,7 +6,6 @@ const Router = express.Router();
 
 Router.put("/addShiftToEmp", async (req, res) => {
   const { shiftId, employeeId } = req.body;
-
   const status = await shiftService.addShiftToEmployee(shiftId, employeeId);
   return res.json({ status });
 });

@@ -13,7 +13,7 @@ const updateShift = (id, obj) => {
 const addShift = async (obj) => {
   shif = new Shift(obj);
   await shif.save();
-  return "Added!";
+  return "New Shift Added!";
 };
 
 module.exports = {

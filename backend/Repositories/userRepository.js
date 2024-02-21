@@ -43,11 +43,19 @@ const getActionsSoFar = async (id) => {
     return -1;
   }
 };
-const decreaseAction = async (id) => {
-  const NumOfActions = await getActionsSoFar(id);
+const increaseAction = async (id) => {
+  var NumOfActions = await getActionsSoFar(id);
   if (NumOfActions >= 0) {
-    const actionsObj = { ActionsSoFar: NumOfActions++ };
+    var actionsObj = { ActionsSoFar: ++NumOfActions };
     await User.findByIdAndUpdate(id, actionsObj);
+  }
+};
+
+const resetActions = async () => {
+  try {
+    await User.updateMany({}, { ActionsSoFar: 0 });
+  } catch (err) {
+    console.error("Error:", err);
   }
 };
 
@@ -56,5 +64,6 @@ module.exports = {
   getUserbyId,
   getMaxActions,
   getActionsSoFar,
-  decreaseAction,
+  increaseAction,
+  resetActions,
 };

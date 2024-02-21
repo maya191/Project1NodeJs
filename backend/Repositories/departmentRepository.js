@@ -13,12 +13,12 @@ const getDepartmentByName = (depName) => {
 };
 const updateDepartment = async (id, obj) => {
   await Department.findByIdAndUpdate(id, obj);
-  return "Updated!";
+  return "Department Updated!";
 };
 const addDepartment = async (newDepartment) => {
   newDepartment = new Department(newDepartment);
   await newDepartment.save();
-  return "Added!";
+  return "New Department Added!";
 };
 
 module.exports = {

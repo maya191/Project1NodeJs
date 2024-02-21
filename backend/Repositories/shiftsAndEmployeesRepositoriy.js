@@ -7,7 +7,7 @@ const getAllShiftsAndEmployees = () => {
 const addShiftToEmployee = async (obj) => {
   shif = new ShiftsAndEmployees(obj);
   await shif.save();
-  return "Added!";
+  return "New Shift Added To Employee!";
 };
 module.exports = {
   getAllShiftsAndEmployees,

@@ -42,24 +42,28 @@ const getAllDes = async () => {
     console.error("Error fetching data:", error);
     throw error;
   }
-
-  /* return {
-    DepartmentName: departments.name,
-    DepartmentManager: emp
-      ? `${employees.FirstName} ${employees.LastName}`
-      : "Unknown",
-    employeesInDepartment: JSON.stringify(empsArr),
-  }; */
 };
 
 const EditDepartment = async (depId, newDep) => {
-  return await departmentRepository.updateDepartment(depId, newDep);
+  try {
+    return await departmentRepository.updateDepartment(depId, newDep);
+  } catch (err) {
+    console.error("Error:", err);
+  }
 };
 const geDepartmentbyId = async (depID) => {
-  return await departmentRepository.geDepartmentbyId(depID);
+  try {
+    return await departmentRepository.geDepartmentbyId(depID);
+  } catch (err) {
+    console.error("Error:", err);
+  }
 };
 const addDepartment = async (depObj) => {
-  return await departmentRepository.addDepartment(depObj);
+  try {
+    return await departmentRepository.addDepartment(depObj);
+  } catch (err) {
+    console.error("Error:", err);
+  }
 };
 
 module.exports = {
